@@ -11,7 +11,7 @@ from rest_framework.views           import APIView
 #from .serializers               import WebhookSerializer
 #import json
 
-from .CsvLoader                      import CsvLoader
+from api.csv_load.CsvLoader         import CsvLoader
 
 # Create your views here.
 
