@@ -1,0 +1,11 @@
+Django==4.0.2
+djangorestframework
+
+# we need to sort
+pandas==1.4.1
+
+#mysqlclient==2.0.1
+cryptography==3.3.1
+PyMySQL==1.0.2
+
+requests==2.26.0
