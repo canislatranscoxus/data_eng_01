@@ -11,7 +11,7 @@ Test the REST API connectivity.
 If we are running django locally, we can open a web browser and use this url
 
 ```
-http://127.0.0.1:8000/csv_load/loader
+http://127.0.0.1:8000/csv_load
 ```
 
 there we can use a GET method, just to test connectivity, and verify the api is up and running.
@@ -23,7 +23,13 @@ If we deploy to a cloud environment such as Google GCP,
 we can use Google App Engine, and use a url like this
 
 ```
-https://gatojazz.dev:443/csv_load/loader
+https://etl01-386320.uc.r.appspot.com/csv_load
+```
+
+or with a registered domain
+
+```
+https://gatojazz.dev:443/csv_load
 ```
 
 Important Note: Remember to always include the port number. 
@@ -34,7 +40,7 @@ Important Note: Remember to always include the port number.
 open the url api endpoint, for example the local
 
 ```
-http://127.0.0.1:8000/csv_load/loader
+http://127.0.0.1:8000/csv_load
 ```
 
 and in the body pass a json with the parameters
