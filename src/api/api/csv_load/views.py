@@ -32,25 +32,30 @@ class CsvView( APIView ):
 
 
     def post(self, request, *args, **kwargs):
-        print( 'api.csv_load.views.CsvLoader.post() ... begin' )
-        params = request.data
+        table_name = ''
+        try:
+            print( 'api.csv_load.views.CsvLoader.post() ... begin' )
+            params = request.data
 
-        # debug code to monitor we are getting the parameters.
-        #s = json.dumps( params, indent = 4 )
-        #print( s )
+            # debug code to monitor we are getting the parameters.
+            #s = json.dumps( params, indent = 4 )
+            #print( s )
 
-        table_name = params[ 'table' ]
-        #self.insert_csv_string( params )
-        csvLoader = CsvLoader( num_transactions= settings.NUM_TRANSACTIONS )
+            table_name = params[ 'table' ]
+            #self.insert_csv_string( params )
+            csvLoader = CsvLoader( num_transactions= settings.NUM_TRANSACTIONS )
 
-        csvLoader.connect(
-             settings.MYSQL_HOST
-            ,settings.MYSQL_NAME
-            ,settings.MYSQL_USER
-            ,settings.MYSQL_PASSWORD )
+            csvLoader.connect(
+                 settings.MYSQL_HOST
+                ,settings.MYSQL_NAME
+                ,settings.MYSQL_USER
+                ,settings.MYSQL_PASSWORD )
 
-        csvLoader.insert_csv_string(params[ 'table' ], params[ 'csv_data' ] )
+            csvLoader.insert_csv_string(params[ 'table' ], params[ 'csv_data' ] )
 
-        print( 'api.csv_load.views.CsvLoad.post() ... end' )
-        return Response( 'data loaded into {} table'.format( table_name ) )
+            print( 'api.csv_load.views.CsvLoad.post() ... end' )
+            return Response( 'data loaded into {} table'.format( table_name ) )
+        except Exception as e:
+            print('csv_load.views.post(), error: {}'.format(e))
+            return Response('Error loading {} table'.format(table_name))
 

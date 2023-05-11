@@ -84,6 +84,7 @@ class CsvLoader:
 
         except Exception as e:
             print( 'CsvLoader.insert_csv_string(), error: {}'.format( e ) )
+            raise
 
     def __init__(self, num_transactions = 10 ):
         try:
