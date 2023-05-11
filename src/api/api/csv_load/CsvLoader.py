@@ -16,6 +16,13 @@ class CsvLoader:
         # This method make a connection to mySQL database.
         try:
             conn = None
+
+            print( 'CsvLoader.connect()' )
+            print( 'host    : ', host     )
+            print( 'database: ', database )
+            print( 'user    : ', user     )
+            print( 'password: ', password )
+
             self.conn = pymysql.connect(host        = host,
                                         database    = database,
                                         user        = user,
@@ -25,7 +32,8 @@ class CsvLoader:
 
             return conn
         except Exception as e:
-            print('CsvLoader.insert_csv_string(), error: {}'.format(e))
+            print('CsvLoader.connect(), error: {}'.format(e))
+            raise
 
     def insert_csv_string(self, table, row_data):
         # This method insert data into table in database.
