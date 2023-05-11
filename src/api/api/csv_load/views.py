@@ -26,6 +26,8 @@ class CsvView( APIView ):
 
     def get( self, request ):
         print( 'api.csv_load.views.CsvLoader.get() ... begin' )
+        print('... working ok')
+        print('api.csv_load.views.CsvLoader.get() ... begin')
         return Response( "test 1 - api is running OK" )
 
 
