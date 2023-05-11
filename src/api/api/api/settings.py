@@ -45,7 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'rest_framework',
+
     'csv_load'
+    #'csv_load.apps.CsvLoadConfig',
+
 ]
 
 MIDDLEWARE = [

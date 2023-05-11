@@ -23,7 +23,6 @@ from django.urls                import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('csv_load'
-         ''
-         '/', include('csv_load.urls')),
+
+    path( '', include('csv_load.urls', namespace='csv_load')),
 ]
