@@ -15,8 +15,6 @@ class CsvLoader:
     def connect(self, host, database, user, password ):
         # This method make a connection to mySQL database.
         try:
-            conn = None
-
             print( 'CsvLoader.connect()' )
             print( 'host    : ', host     )
             print( 'database: ', database )
@@ -30,7 +28,6 @@ class CsvLoader:
                                         charset     = 'utf8mb4',
                                         cursorclass = pymysql.cursors.DictCursor)
 
-            return conn
         except Exception as e:
             print('CsvLoader.connect(), error: {}'.format(e))
             raise

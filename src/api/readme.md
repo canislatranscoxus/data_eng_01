@@ -77,3 +77,11 @@ csv_data parameter. See the parameters below:
     "csv_data": "1,Product Management\n\r2,Sales"
 }
 ```
+
+
+```
+{
+    "table": "jobs",
+    "csv_data": "1,Marketing Assistant\n2,VP Sales\n3,Biostatician IV\n4,Account Representant\n5,VP Marketing\n6,Environmental Spec\n7,Software Consultant\n8,Office Assistant III\n9,Information Systems\n10,Desktop Suport Tech"
+}
+```
