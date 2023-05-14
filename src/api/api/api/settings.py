@@ -96,6 +96,12 @@ MYSQL_PASSWORD = os.environ[ 'MYSQL_PASSWORD' ]
 
 NUM_TRANSACTIONS = os.environ[ 'NUM_TRANSACTIONS' ]
 
+
+
+
+
+
+
 DATABASES = {
     'default': {
         'ENGINE'    : 'django.db.backends.mysql',
