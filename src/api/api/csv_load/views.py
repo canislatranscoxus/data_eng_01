@@ -20,6 +20,7 @@ class TestDbView( APIView ):
                                    database = settings.MYSQL_NAME,
                                    user     = settings.MYSQL_USER,
                                    password = settings.MYSQL_PASSWORD,
+                                   port     = 3306,
                                    charset  = 'utf8mb4',
                                    cursorclass=pymysql.cursors.DictCursor)
             cursor = conn.cursor()

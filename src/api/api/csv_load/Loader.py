@@ -26,6 +26,7 @@ class Loader:
                                         database    = database,
                                         user        = user,
                                         password    = password,
+                                        port        = 3306,
                                         charset     = 'utf8mb4',
                                         cursorclass = pymysql.cursors.DictCursor)
             print( 'Loader.connect() ... ok' )
