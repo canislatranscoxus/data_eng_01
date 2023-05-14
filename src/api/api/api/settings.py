@@ -95,6 +95,7 @@ MYSQL_USER       = os.environ[ 'MYSQL_USER'     ]
 MYSQL_PASSWORD   = os.environ[ 'MYSQL_PASSWORD' ]
 NUM_TRANSACTIONS = os.environ[ 'NUM_TRANSACTIONS' ]
 
+'''
 DATABASES = {
     'default': {
         'ENGINE'    : 'django.db.backends.mysql',
@@ -104,16 +105,16 @@ DATABASES = {
         'PASSWORD'  : MYSQL_PASSWORD,
         'PORT'      : '3306',
     }
-}
+}'''
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 # Password validation
