@@ -22,6 +22,9 @@ from django.urls                import path
 app_name = 'csv_load'
 
 urlpatterns = [
+
+    path( 'testdb'  , views.TestDbView.as_view() ),
+
     path( ''  , views.CsvView.as_view() ),
     path( 'csv_load'  , views.CsvView.as_view() ),
 ]

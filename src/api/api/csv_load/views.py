@@ -1,3 +1,5 @@
+import pymysql.cursors
+
 from django.shortcuts               import render
 from django.conf                    import settings
 
@@ -11,6 +13,26 @@ from .ETL                           import ETL
 
 # Create your views here.
 
+class TestDbView( APIView ):
+    def get(self, request):
+        try:
+            conn = pymysql.connect(host     = settings.MYSQL_HOST,
+                                   database = settings.MYSQL_NAME,
+                                   user     = settings.MYSQL_USER,
+                                   password = settings.MYSQL_PASSWORD,
+                                   charset  = 'utf8mb4',
+                                   cursorclass=pymysql.cursors.DictCursor)
+            cursor = conn.cursor()
+            cursor.execute( 'select * from departments;' )
+            result = cursor.fetchall()
+            #conn.commit()
+
+            for i in result:
+                print( i )
+
+            return Response( "database test ..OK. \n table deparments \n {}".format( result) )
+        except Exception as e:
+            print( 'TestDb.get(), error: {}'.format( e ) )
 
 class CsvView( APIView ):
 

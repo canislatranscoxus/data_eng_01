@@ -89,18 +89,11 @@ import pymysql  # noqa: 402
 pymysql.version_info = (1, 4, 6, 'final', 0)  # change mysqlclient version
 pymysql.install_as_MySQLdb()
 
-MYSQL_HOST     = os.environ[ 'MYSQL_HOST'     ]
-MYSQL_NAME     = os.environ[ 'MYSQL_NAME'     ]
-MYSQL_USER     = os.environ[ 'MYSQL_USER'     ]
-MYSQL_PASSWORD = os.environ[ 'MYSQL_PASSWORD' ]
-
+MYSQL_HOST       = os.environ[ 'MYSQL_HOST'     ]
+MYSQL_NAME       = os.environ[ 'MYSQL_NAME'     ]
+MYSQL_USER       = os.environ[ 'MYSQL_USER'     ]
+MYSQL_PASSWORD   = os.environ[ 'MYSQL_PASSWORD' ]
 NUM_TRANSACTIONS = os.environ[ 'NUM_TRANSACTIONS' ]
-
-
-
-
-
-
 
 DATABASES = {
     'default': {
