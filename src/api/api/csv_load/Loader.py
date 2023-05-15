@@ -42,12 +42,14 @@ class Loader:
             return number_of_rows
         except Exception as e:
             print( 'Loader.insert(), error: {}'.format(e) )
+            raise
 
     def commit(self):
         try:
             self.conn.commit()
         except Exception as e:
             print( 'Loader.insert(), error: {}'.format(e) )
+            raise
 
 
     def __init__(self, params ):
@@ -61,3 +63,4 @@ class Loader:
             self.cursor = self.conn.cursor()
         except Exception as e:
             print( 'Loader.__init__(), error: {}'.format(e) )
+            raise

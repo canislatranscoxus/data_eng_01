@@ -27,6 +27,7 @@ class ETL:
                         self.loader.commit()
                 except Exception as e:
                     print('ETL.run() for line, error: {}'.format(e))
+                    raise
 
             # If we have a small batch at the end, we insert into database now.
             self.loader.commit()
