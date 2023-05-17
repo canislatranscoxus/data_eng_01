@@ -1,5 +1,8 @@
+import os.path
+
 import pymysql.cursors
 
+from datetime                       import datetime
 from django.shortcuts               import render
 from django.conf                    import settings
 
@@ -10,6 +13,9 @@ from rest_framework.response        import Response
 from rest_framework.views           import APIView
 
 from .ETL                           import ETL
+from .avro.AJobs                    import AJobs
+from .avro.ADepartments             import ADepartments
+from .avro.AHiredEmployees          import AHiredEmployees
 
 # Create your views here.
 
@@ -43,7 +49,7 @@ class CsvView( APIView ):
     def get( self, request ):
         print( 'api.csv_load.views.CsvLoader.get() ... begin' )
         print('... working ok')
-        print('api.csv_load.views.CsvLoader.get() ... begin')
+        print('CsvView.CsvLoader.get() ... begin')
         return Response( "test 1 - api is running OK" )
 
 
@@ -56,6 +62,30 @@ class CsvView( APIView ):
             etl.run()
             return Response( 'ETL finished successfully' )
         except Exception as e:
-            print('csv_load.views.post(), error: {}'.format(e))
+            print('CsvView.post(), error: {}'.format(e))
             return Response( 'Error loading csv data' )
 
+class BackupView( APIView ):
+    def post(self, request, *args, **kwargs):
+        try:
+            print( 'Database Backup ... starting ' )
+            params          = settings.__dict__['_wrapped'].__dict__
+            departments     = ADepartments(params)
+            jobs            = AJobs(params)
+            hired_employees = AHiredEmployees(params)
+
+            # create folder for new backups
+            dt = datetime.now()
+            tar_dir = dt.strftime('%Y%m%d_%H%M%S')
+            tar_dir = os.path.join( settings.BACKUP_PATH, tar_dir )
+            os.mkdir( tar_dir )
+
+            # make backup
+            departments.export( tar_dir )
+            jobs.export(tar_dir)
+            hired_employees.export(tar_dir)
+
+            return Response('Backup finished successfully')
+        except Exception as e:
+            print('Backup.post(), error: {}'.format(e))
+            return Response('Error loading csv data')

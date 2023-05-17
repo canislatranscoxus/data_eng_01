@@ -27,4 +27,6 @@ urlpatterns = [
 
     path( ''  , views.CsvView.as_view() ),
     path( 'csv_load'  , views.CsvView.as_view() ),
+
+    path( 'backup'  , views.BackupView.as_view() ),
 ]

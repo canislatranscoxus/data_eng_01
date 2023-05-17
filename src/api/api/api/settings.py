@@ -163,3 +163,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny'
     ]
 }
+
+ON_CLOUD   = os.environ[ 'ON_CLOUD' ]
+BACKUP_PATH= os.environ[ 'BACKUP_PATH' ]
