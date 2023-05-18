@@ -164,6 +164,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-ON_CLOUD    = os.environ[ 'ON_CLOUD'    ]
+ON_CLOUD    = int( os.environ[ 'ON_CLOUD'    ] )
 BUCKET      = os.environ[ 'BUCKET'      ]
 BACKUP_PATH = os.environ[ 'BACKUP_PATH' ]
