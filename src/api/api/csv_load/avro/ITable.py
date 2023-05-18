@@ -9,6 +9,9 @@ import avro.schema
 from avro.datafile import DataFileReader, DataFileWriter
 from avro.io import DatumReader, DatumWriter
 
+import fastavro
+
+
 from .GCS import GCS
 
 class ITable( ABC ):
@@ -49,7 +52,7 @@ class ITable( ABC ):
         pass
 
 
-    def export_to_gcs(self, tar_dir):
+    def export_to_gcs2(self, tar_dir):
         # export tables as avro files to Google Cloud Storage (GCS)
         try:
             print( 'ITable.export_to_gcs() ... start' )
@@ -64,7 +67,7 @@ class ITable( ABC ):
             #writer = DataFileWriter(open( file_name, "wb"), DatumWriter(), schema)
 
             writer = avro.io.DatumWriter(schema)
-            bytes_writer = io.BytesIO()
+            bytes_writer = io.BytesIO( )
             encoder = avro.io.BinaryEncoder(bytes_writer)
 
             print('looping SQL result')
@@ -72,14 +75,11 @@ class ITable( ABC ):
             for d in result:
 
                 print( d )
-
                 self.clean_export_row(d)
-                #writer.append( d )
                 writer.write(d, encoder)
 
             print( 'ITable ... encode utf 8' )
             raw_bytes = bytes_writer.getvalue()
-
 
             try:
                 src_string = raw_bytes.decode( 'utf-8' )
@@ -95,7 +95,46 @@ class ITable( ABC ):
             print( 'ITable.export_to_gcs(), table: {}, error: '.format( self.table_name, e ) )
             raise
 
+    def export_to_gcs(self, tar_dir):
+        # export tables as avro files to Google Cloud Storage (GCS)
+        try:
+            print('ITable.export_to_gcs() ... start')
 
+            file_name = os.path.join(tar_dir, self.table_name) + '.avro'
+            sql_command = 'select * from {}'.format(self.table_name)
+            cursor = self.conn.cursor()
+            cursor.execute(sql_command)
+            result = cursor.fetchall()
+
+            #schema = avro.schema.parse(json.dumps(self.schema))
+            parsed_schema = fastavro.parse_schema( self.schema )
+
+            data = []
+
+            print('looping SQL result')
+            for d in result:
+                print(d)
+                self.clean_export_row(d)
+                data.append( d )
+
+            print('ITable ... encode utf 8')
+            bytes_writer = io.BytesIO()
+            fastavro.writer(bytes_writer, parsed_schema, data)
+            raw_bytes = bytes_writer.getvalue()
+
+            try:
+                src_string = raw_bytes.decode('utf-8')
+            except Exception as e2:
+                src_string = raw_bytes.decode(encoding='latin-1')
+
+            GCS.upload_blob_from_string(self.params['BUCKET'], src_string, file_name)
+
+            print('uploading {} to gcp cloud storage'.format(file_name))
+            print('ITable.export_to_gcs() ... end')
+
+        except Exception as e:
+            print('ITable.export_to_gcs(), table: {}, error: {}'.format(self.table_name, e))
+            raise
 
     def export_to_fs(self, tar_dir ):
         # export table as avro file in the target directory
@@ -123,14 +162,10 @@ class ITable( ABC ):
         try:
             print( 'ITable.export() ... start' )
 
-            #self.export_to_gcs(tar_dir)
-
-
             if self.params[ 'ON_CLOUD' ] == 1:
                 self.export_to_gcs( tar_dir )
             else:
                 self.export_to_fs( tar_dir )
-
 
             print('ITable.export() ... end')
 
