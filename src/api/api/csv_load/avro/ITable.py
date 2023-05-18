@@ -79,11 +79,11 @@ class ITable( ABC ):
 
             print( 'ITable ... encode utf 8' )
             raw_bytes = bytes_writer.getvalue()
-            wrapper = io.TextIOWrapper(input, encoding='utf-8')
-            raw_bytes = wrapper.read()
 
 
-            src_string = raw_bytes.decode( 'utf-8' )
+            #src_string = raw_bytes.decode( 'utf-8' )
+            src_string = raw_bytes.decode()
+
             GCS.upload_blob_from_string( self.params[ 'BUCKET' ], src_string, file_name )
 
             print( 'uploading {} to gcp cloud storage'.format( file_name ) )
@@ -123,10 +123,12 @@ class ITable( ABC ):
 
             #self.export_to_gcs(tar_dir)
 
+
             if self.params[ 'ON_CLOUD' ] == 1:
                 self.export_to_gcs( tar_dir )
             else:
                 self.export_to_fs( tar_dir )
+
 
             print('ITable.export() ... end')
 
