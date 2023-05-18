@@ -1,12 +1,15 @@
-from abc import ABC
+from abc import ABC, abstractmethod
+import io
 import json
 import os
 import pymysql.cursors
 
+import avro.io
 import avro.schema
 from avro.datafile import DataFileReader, DataFileWriter
 from avro.io import DatumReader, DatumWriter
 
+from GCS import GCS
 
 class ITable( ABC ):
     params = None
@@ -45,7 +48,46 @@ class ITable( ABC ):
     def clean_export_row(self, d):
         pass
 
-    def export(self, tar_dir ):
+
+    def export_to_gcs(self, tar_dir):
+        # export tables as avro files to Google Cloud Storage (GCS)
+        try:
+            print( 'ITable.export_to_gcs() ... start' )
+
+            file_name   = os.path.join( tar_dir, self.table_name ) + '.avro'
+            sql_command = 'select * from {}'.format( self.table_name )
+            cursor      = self.conn.cursor()
+            cursor.execute(sql_command)
+            result = cursor.fetchall()
+            schema = avro.schema.parse( json.dumps( self.schema ) )
+            d = {}
+            #writer = DataFileWriter(open( file_name, "wb"), DatumWriter(), schema)
+
+            writer = avro.io.DatumWriter(schema)
+            bytes_writer = io.BytesIO()
+            encoder = avro.io.BinaryEncoder(bytes_writer)
+
+            for d in result:
+                self.clean_export_row(d)
+                #writer.append( d )
+                writer.write(d, encoder)
+
+            raw_bytes = bytes_writer.getvalue()
+
+
+            src_string = raw_bytes.decode( 'utf-8' )
+            GCS.upload_blob_from_string( self.params[ 'BUCKET' ], src_string, file_name )
+
+            print( 'uploading {} to gcp cloud storage'.format( file_name ) )
+            print('ITable.export_to_gcs() ... end')
+
+        except Exception as e:
+            print( 'ITable.export_to_gcs(), table: {}, error: '.format( self.table_name, e ) )
+            raise
+
+
+
+    def export_to_fs(self, tar_dir ):
         # export table as avro file in the target directory
         try:
             file_name   = os.path.join( tar_dir, self.table_name ) + '.avro'
@@ -61,9 +103,24 @@ class ITable( ABC ):
             for d in result:
                 self.clean_export_row(d)
                 writer.append( d )
+
             writer.close()
         except Exception as e:
-            print( 'ITable.export(), table: {}, error: '.format( self.table_name, e ) )
+            print( 'ITable.export_to_fs(), table: {}, error: '.format( self.table_name, e ) )
+            raise
+
+    def export(self, tar_dir ):
+        try:
+            #self.export_to_gcs(tar_dir)
+
+
+            if self.params[ 'ON_CLOUD' ] == 1:
+                self.export_to_gcs( tar_dir )
+            else:
+                self.export_to_fs( tar_dir )
+
+        except Exception as e:
+            print( 'ITable.export(), error: '.format( e ) )
             raise
 
 

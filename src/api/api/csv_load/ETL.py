@@ -16,6 +16,7 @@ class ETL:
     loader   = None
 
     def backup(self):
+        # this method create a backup from mySQL to avro files.
         try:
             departments = ADepartments( self.params )
             jobs = AJobs( self.params )
