@@ -9,7 +9,7 @@ import avro.schema
 from avro.datafile import DataFileReader, DataFileWriter
 from avro.io import DatumReader, DatumWriter
 
-from GCS import GCS
+from .GCS import GCS
 
 class ITable( ABC ):
     params = None
