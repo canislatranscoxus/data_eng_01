@@ -59,6 +59,7 @@ class GCS:
             # my_file.make_public()
 
         except Exception as e:
+            print( 'GCS.upload_blob_from_string(), error: {}'.format( e ) )
             print('error uploading {}/{}, src_string: {}'.format(bucket_name, tar_blob_name, src_string))
 
     @staticmethod

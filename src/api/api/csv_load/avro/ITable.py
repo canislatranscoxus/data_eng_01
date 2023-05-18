@@ -77,7 +77,10 @@ class ITable( ABC ):
                 #writer.append( d )
                 writer.write(d, encoder)
 
+            print( 'ITable ... encode utf 8' )
             raw_bytes = bytes_writer.getvalue()
+            wrapper = io.TextIOWrapper(input, encoding='utf-8')
+            raw_bytes = wrapper.read()
 
 
             src_string = raw_bytes.decode( 'utf-8' )
