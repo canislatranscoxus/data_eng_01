@@ -95,8 +95,9 @@ class ITable( ABC ):
             print( 'ITable.export_to_gcs(), table: {}, error: '.format( self.table_name, e ) )
             raise
 
+
     def export_to_gcs(self, tar_dir):
-        # export tables as avro files to Google Cloud Storage (GCS)
+        # export tables as avro files to Google Cloud Storage (GCS), using fastavro.
         try:
             print('ITable.export_to_gcs() ... start')
 
