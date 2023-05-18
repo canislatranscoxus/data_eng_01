@@ -113,7 +113,6 @@ class ITable( ABC ):
         try:
             #self.export_to_gcs(tar_dir)
 
-
             if self.params[ 'ON_CLOUD' ] == 1:
                 self.export_to_gcs( tar_dir )
             else:
