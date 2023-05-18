@@ -108,7 +108,7 @@ class ITable( ABC ):
             result = cursor.fetchall()
 
             #schema = avro.schema.parse(json.dumps(self.schema))
-            parsed_schema = fastavro.parse_schema( self.schema )
+
 
             data = []
 
@@ -120,7 +120,7 @@ class ITable( ABC ):
 
             print('ITable ... encode utf 8')
             bytes_writer = io.BytesIO()
-            fastavro.writer(bytes_writer, parsed_schema, data)
+            fastavro.writer(bytes_writer, self.schema, data)
             raw_bytes = bytes_writer.getvalue()
 
             try:
@@ -162,6 +162,8 @@ class ITable( ABC ):
     def export(self, tar_dir ):
         try:
             print( 'ITable.export() ... start' )
+            #self.export_to_gcs(tar_dir)
+
 
             if self.params[ 'ON_CLOUD' ] == 1:
                 self.export_to_gcs( tar_dir )
