@@ -68,24 +68,21 @@ class CsvView( APIView ):
 class BackupView( APIView ):
     def post(self, request, *args, **kwargs):
         try:
-            print( 'Database Backup ... starting ' )
             params          = settings.__dict__['_wrapped'].__dict__
-            departments     = ADepartments(params)
-            jobs            = AJobs(params)
-            hired_employees = AHiredEmployees(params)
-
-            # create folder for new backups
-            dt = datetime.now()
-            tar_dir = dt.strftime('%Y%m%d_%H%M%S')
-            tar_dir = os.path.join( settings.BACKUP_PATH, tar_dir )
-            os.mkdir( tar_dir )
-
-            # make backup
-            departments.export( tar_dir )
-            jobs.export(tar_dir)
-            hired_employees.export(tar_dir)
-
+            etl = ETL(params)
+            etl.backup()
             return Response('Backup finished successfully')
         except Exception as e:
             print('Backup.post(), error: {}'.format(e))
+            return Response('Error loading csv data')
+
+class RestoreView( APIView ):
+    def post(self, request, *args, **kwargs):
+        try:
+            params          = settings.__dict__['_wrapped'].__dict__
+            etl = ETL(params)
+            etl.restore( request.data[ 'src_dir'  ] )
+            return Response('Restore finished successfully')
+        except Exception as e:
+            print('Restore.post(), error: {}'.format(e))
             return Response('Error loading csv data')

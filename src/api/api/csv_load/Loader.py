@@ -12,7 +12,6 @@ class Loader:
         'hired_employees' : "INSERT INTO hired_employees(id,name,datetime,department_id,job_id) values({},'{}','{}',{},{});",
     }
 
-
     def connect(self, host, database, user, password ):
         # This method make a connection to mySQL database.
         try:
@@ -43,6 +42,8 @@ class Loader:
         except Exception as e:
             print( 'Loader.insert(), error: {}'.format(e) )
             raise
+
+
 
     def commit(self):
         try:

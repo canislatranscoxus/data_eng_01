@@ -4,7 +4,7 @@ Warning: This script will drop the existing tables.
 
 */
 
-create database company01;
+-- create database company01;
 use company01;
 
 

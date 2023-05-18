@@ -1,10 +1,54 @@
-from .Extractor      import Extractor
-from .Transformer    import Transformer
-from .Loader         import Loader
+import os
+from datetime               import datetime
+
+from .Extractor import Extractor
+from .Transformer           import Transformer
+from .Loader                import Loader
+
+from .avro.AJobs            import AJobs
+from .avro.ADepartments     import ADepartments
+from .avro.AHiredEmployees  import AHiredEmployees
+
 class ETL:
+    params   = None
     table    = None
     csv_data = None
     loader   = None
+
+    def backup(self):
+        try:
+            departments = ADepartments( self.params )
+            jobs = AJobs( self.params )
+            hired_employees = AHiredEmployees( self.params )
+
+            # create folder for new backups
+            dt = datetime.now()
+            tar_dir = dt.strftime('%Y%m%d_%H%M%S')
+            tar_dir = os.path.join( self.params[ 'BACKUP_PATH' ], tar_dir)
+            os.mkdir(tar_dir)
+
+            # make backup
+            departments.export(tar_dir)
+            jobs.export(tar_dir)
+            hired_employees.export(tar_dir)
+        except Exception as e:
+            print( 'ETL.backup(), error: {}'.format( e ) )
+            raise
+
+    def restore(self, src_dir ):
+        try:
+            departments = ADepartments( self.params )
+            jobs = AJobs( self.params )
+            hired_employees = AHiredEmployees( self.params )
+
+            # make backup
+            departments.restore(src_dir)
+            jobs.restore(src_dir)
+            hired_employees.restore(src_dir)
+        except Exception as e:
+            print( 'ETL.restore(), error: {}'.format( e ) )
+            raise
+
 
     def run(self ):
         # This method insert data into table in database.
@@ -46,6 +90,7 @@ class ETL:
 
                  ):
         try:
+            self.params   = params
             self.table    = params[ 'table'    ]
             self.csv_data = params[ 'csv_data' ]
             self.num_transactions = int(params['NUM_TRANSACTIONS'])

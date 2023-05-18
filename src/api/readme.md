@@ -13,11 +13,14 @@ https://gatojazz.dev
 ## Abstract
 
 This is a PoC of a Rest API created in Python Django. 
+The solution is a ETL, Extract Tansform Load.
 We expose an url point to send raw data in csv format, 
-next the python backend code is Transformed and Loaded into mySQL database.
+next in the backend python code take the row data and Transform it,
+and Loaded into mySQL database.
+Also, we have one API for basckup tables to avro files
+and another API to restore database tables from avro files.
 
-
-## usage
+## usage of CSV ETL
 
 Test the REST API connectivity.
 If we are running django locally, we can open a web browser and use this url
@@ -85,3 +88,31 @@ csv_data parameter. See the parameters below:
     "csv_data": "1,Marketing Assistant\n2,VP Sales\n3,Biostatician IV\n4,Account Representant\n5,VP Marketing\n6,Environmental Spec\n7,Software Consultant\n8,Office Assistant III\n9,Information Systems\n10,Desktop Suport Tech"
 }
 ```
+
+### how to make database backup
+
+This feature create three avro files one per each table in our mySQL database.
+We set the backup folder parameter in the environment variable
+
+```
+BACKUP_PATH
+```
+
+use a tool like postman to hit the rest API url with the next parameters
+
+|---|---|
+| method | post |
+| url on cloud | https://gatojazz/backup |
+| url in local environment | http://127.0.0.1:8000/backup |
+
+
+### How to make a database restore
+
+use a tool like postman to hit the rest API url with the next parameters
+and in the body, pass the source directory that contain the avro files.
+
+|---|---|
+| method | post |
+| url on cloud | https://gatojazz/restore |
+| url in local environment | http://127.0.0.1:8000/restore |
+| body  | { "src_dir" : "<folder_path_with_avro_files>"  }  |
