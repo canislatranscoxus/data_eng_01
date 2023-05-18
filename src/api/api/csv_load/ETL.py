@@ -27,7 +27,9 @@ class ETL:
             dt = datetime.now()
             tar_dir = dt.strftime('%Y%m%d_%H%M%S')
             tar_dir = os.path.join( self.params[ 'BACKUP_PATH' ], tar_dir)
-            os.mkdir(tar_dir)
+
+            if self.params[ 'ON_CLOUD' ] == 0:
+                os.mkdir(tar_dir)
 
             # make backup
             departments.export(tar_dir)
