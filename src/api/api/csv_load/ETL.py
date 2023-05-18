@@ -18,6 +18,7 @@ class ETL:
     def backup(self):
         # this method create a backup from mySQL to avro files.
         try:
+            print( 'ETL.backup ... begin' )
             departments = ADepartments( self.params )
             jobs = AJobs( self.params )
             hired_employees = AHiredEmployees( self.params )
@@ -32,6 +33,9 @@ class ETL:
             departments.export(tar_dir)
             jobs.export(tar_dir)
             hired_employees.export(tar_dir)
+
+            print('ETL.backup ... end')
+
         except Exception as e:
             print( 'ETL.backup(), error: {}'.format( e ) )
             raise

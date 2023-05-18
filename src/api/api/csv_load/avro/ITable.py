@@ -67,7 +67,12 @@ class ITable( ABC ):
             bytes_writer = io.BytesIO()
             encoder = avro.io.BinaryEncoder(bytes_writer)
 
+            print('looping SQL result')
+
             for d in result:
+
+                print( d )
+
                 self.clean_export_row(d)
                 #writer.append( d )
                 writer.write(d, encoder)
@@ -111,12 +116,16 @@ class ITable( ABC ):
 
     def export(self, tar_dir ):
         try:
+            print( 'ITable.export() ... start' )
+
             #self.export_to_gcs(tar_dir)
 
             if self.params[ 'ON_CLOUD' ] == 1:
                 self.export_to_gcs( tar_dir )
             else:
                 self.export_to_fs( tar_dir )
+
+            print('ITable.export() ... end')
 
         except Exception as e:
             print( 'ITable.export(), error: '.format( e ) )
