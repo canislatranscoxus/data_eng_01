@@ -81,8 +81,10 @@ class ITable( ABC ):
             raw_bytes = bytes_writer.getvalue()
 
 
-            #src_string = raw_bytes.decode( 'utf-8' )
-            src_string = raw_bytes.decode()
+            try:
+                src_string = raw_bytes.decode( 'utf-8' )
+            except Exception as e2:
+                src_string = raw_bytes.decode( encoding = 'latin-1' )
 
             GCS.upload_blob_from_string( self.params[ 'BUCKET' ], src_string, file_name )
 
