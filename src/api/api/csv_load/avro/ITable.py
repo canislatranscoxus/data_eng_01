@@ -101,36 +101,26 @@ class ITable( ABC ):
         try:
             print('ITable.export_to_gcs() ... start')
 
-            file_name = os.path.join(tar_dir, self.table_name) + '.avro'
+            file_name = os.path.join(tar_dir, self.table_name) + '.json'
             sql_command = 'select * from {}'.format(self.table_name)
             cursor = self.conn.cursor()
             cursor.execute(sql_command)
             result = cursor.fetchall()
-
-            #schema = avro.schema.parse(json.dumps(self.schema))
-
-
             data = []
-
             print('looping SQL result')
+
             for d in result:
                 print(d)
                 self.clean_export_row(d)
                 data.append( d )
 
             print('ITable ... encode utf 8')
-            bytes_writer = io.BytesIO()
-            fastavro.writer(bytes_writer, self.schema, data)
-            raw_bytes = bytes_writer.getvalue()
+            j = {
+                'schema' :self.schema,
+                'data' : data
+            }
 
-            try:
-                #src_string = raw_bytes.decode('utf-8')
-                src_string = raw_bytes.decode( 'unicode_escape' )
-
-            except Exception as e2:
-                src_string = raw_bytes.decode(encoding='latin-1')
-                print( 'ITable, decoding error' )
-
+            src_string = json.dumps( j )
             GCS.upload_blob_from_string(self.params['BUCKET'], src_string, file_name)
 
             print('uploading {} to gcp cloud storage'.format(file_name))
