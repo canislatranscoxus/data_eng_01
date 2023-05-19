@@ -27,7 +27,7 @@ class AHiredEmployees( ITable ):
             #ts = d['datetime'].replace(tzinfo= timezone.utc).timestamp()
             #ts = 1627401728
             ts = d['datetime'].replace(tzinfo=timezone.utc)
-            d['datetime'] =  ts
+            d['datetime'] =  ts.strftime('%Y-%m-%d-%H:%M:%S' )
         except Exception as e:
             print( 'AHiredEmployees.clean_export_row(), error: '.format( self.table_name, e ) )
             raise
