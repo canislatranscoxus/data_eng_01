@@ -7,7 +7,7 @@ arturo_alatriste@hotmail.com
 
 https://github.com/canislatranscoxus/data_eng_01
 
-https://gatojazz.dev
+https://aatvelo4.wn.r.appspot.com
 
 
 ## Abstract
@@ -38,17 +38,10 @@ If we deploy to a cloud environment such as Google GCP,
 we can use Google App Engine to run our Django Solution, and use a url like this
 
 ```
-https://etl01-386320.uc.r.appspot.com/csv_load
+https://aatvelo4.wn.r.appspot.com/csv_load
 ```
 
-or our new registered domain 
 
-```
-https://gatojazz.dev
-https://gatojazz.dev/csv_load
-https://gatojazz.dev:443
-https://gatojazz.dev:443/csv_load
-```
 
 Note: Remember to include the port number. 
       This can be different, depending on the environment, platform or cloud provider. 
@@ -102,7 +95,6 @@ use a tool like postman to hit the rest API url with the next parameters
 
 |---|---|
 | method | post |
-| url on cloud | https://gatojazz/backup |
 | url in local environment | http://127.0.0.1:8000/backup |
 
 
@@ -113,6 +105,5 @@ and in the body, pass the source directory that contain the avro files.
 
 |---|---|
 | method | post |
-| url on cloud | https://gatojazz/restore |
 | url in local environment | http://127.0.0.1:8000/restore |
 | body  | { "src_dir" : "<folder_path_with_avro_files>"  }  |
