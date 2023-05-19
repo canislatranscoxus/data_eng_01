@@ -164,9 +164,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-API_USER = os.environ[ 'API_USER'       ]
-API_AUTH = os.environ[ 'API_AUTH'       ]
-
 ON_CLOUD    = int( os.environ[ 'ON_CLOUD'    ] )
 BUCKET      = os.environ[ 'BUCKET'      ]
 BACKUP_PATH = os.environ[ 'BACKUP_PATH' ]
