@@ -124,9 +124,12 @@ class ITable( ABC ):
             raw_bytes = bytes_writer.getvalue()
 
             try:
-                src_string = raw_bytes.decode('utf-8')
+                #src_string = raw_bytes.decode('utf-8')
+                src_string = raw_bytes.decode( 'unicode_escape' )
+
             except Exception as e2:
                 src_string = raw_bytes.decode(encoding='latin-1')
+                print( 'ITable, decoding error' )
 
             GCS.upload_blob_from_string(self.params['BUCKET'], src_string, file_name)
 
@@ -162,8 +165,6 @@ class ITable( ABC ):
     def export(self, tar_dir ):
         try:
             print( 'ITable.export() ... start' )
-            #self.export_to_gcs(tar_dir)
-
 
             if self.params[ 'ON_CLOUD' ] == 1:
                 self.export_to_gcs( tar_dir )
