@@ -1,6 +1,5 @@
 # PoC of ETL ingesting csv data from REST API to mySQL on Google Cloud GCP.
 
-
 #### Arturo Alatriste Trujillo
 
 arturo_alatriste@hotmail.com
